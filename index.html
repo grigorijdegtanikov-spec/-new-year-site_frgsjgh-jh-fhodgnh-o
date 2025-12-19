@@ -217,6 +217,10 @@
             animation: messageChange 0.6s cubic-bezier(0.68, -0.55, 0.27, 1.55) forwards;
         }
         
+        .message-disappear {
+            animation: messageDisappear 1s ease-out forwards;
+        }
+        
         @keyframes messageAppear {
             0% {
                 opacity: 0;
@@ -243,6 +247,18 @@
             100% {
                 opacity: 1;
                 transform: scale(1);
+            }
+        }
+        
+        @keyframes messageDisappear {
+            0% {
+                opacity: 1;
+                transform: scale(1);
+            }
+            100% {
+                opacity: 0;
+                transform: scale(0.8);
+                display: none;
             }
         }
         
@@ -399,6 +415,7 @@
         let isMobileMode = false;
         let isChangedMode = false;
         let isHolding = false;
+        let messageTimeout;
         const originalCat = "https://i.pinimg.com/736x/e0/4e/4b/e04e4b598abd3646eb0ce75dc3d3db5d.jpg";
         const changedCat = "https://i.pinimg.com/originals/37/7c/ba/377cbac9738316803e71c211cb755c3a.jpg";
         
@@ -433,8 +450,17 @@
         function animateMessage(newText, isChange = false) {
             const messageElement = document.getElementById("message");
             
+            // Очищаем предыдущий таймер скрытия
+            if (messageTimeout) {
+                clearTimeout(messageTimeout);
+            }
+            
+            // Сбрасываем анимацию исчезновения
+            messageElement.classList.remove("message-disappear");
+            messageElement.style.display = "block";
+            messageElement.style.opacity = "1";
+            
             if (isChange) {
-                messageElement.style.display = "block";
                 messageElement.textContent = newText;
                 messageElement.classList.remove("message-appear");
                 void messageElement.offsetWidth; // Сброс анимации
@@ -444,7 +470,6 @@
                     messageElement.classList.remove("message-change");
                 }, 600);
             } else {
-                messageElement.style.display = "block";
                 messageElement.textContent = newText;
                 messageElement.classList.remove("message-change");
                 void messageElement.offsetWidth;
@@ -454,6 +479,23 @@
                     messageElement.classList.remove("message-appear");
                 }, 800);
             }
+            
+            // Устанавливаем таймер для скрытия текста через 10 секунд
+            messageTimeout = setTimeout(() => {
+                hideMessage();
+            }, 10000);
+        }
+        
+        // Функция скрытия сообщения
+        function hideMessage() {
+            const messageElement = document.getElementById("message");
+            messageElement.classList.add("message-disappear");
+            
+            // Через секунду после начала анимации скрытия полностью скрываем элемент
+            setTimeout(() => {
+                messageElement.style.display = "none";
+                messageElement.classList.remove("message-disappear");
+            }, 1000);
         }
         
         // Основная кнопка "С Новым годом!"
@@ -519,6 +561,9 @@
                 cat.src = changedCat;
                 // После 5 секунд удержания картинка не пропадает
                 btn.style.background = "linear-gradient(135deg, #4CAF50 0%, #2E7D32 100%)";
+                
+                // Показываем сообщение при удержании
+                animateMessage("✨ Ты держишь кнопку 5 секунд! ✨", false);
             }, 5000);
         };
         
@@ -600,6 +645,7 @@
     </script>
 </body>
 </html>
+
 
 
 
