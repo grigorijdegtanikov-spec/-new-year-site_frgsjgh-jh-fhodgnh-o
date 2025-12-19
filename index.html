@@ -16,6 +16,7 @@
         #cat {
             width: 300px;
             margin-bottom: 20px;
+            transition: 0.5s;
         }
         button {
             padding: 10px 20px;
@@ -24,8 +25,10 @@
         #message {
             display: none;
             font-size: 48px;
-            color: #3b3b3b; /* Измененный цвет */
+            color: #3b3b3b;
             margin-top: 20px;
+            opacity: 0;
+            transition: opacity 0.5s;
         }
     </style>
 </head>
@@ -36,13 +39,38 @@
     <div id="message">Нового года не будет</div>
 
     <script>
+        let isMessageOne = true;
+
         document.getElementById("greetBtn").onclick = function() {
-            document.getElementById("message").style.display = "block"; // Показываем сообщение
+            const messageElement = document.getElementById("message");
+            messageElement.style.display = "block";
+            
+            if (isMessageOne) {
+                messageElement.textContent = "Новый год будет";
+            } else {
+                messageElement.textContent = "Нового года не будет";
+            }
+
+            messageElement.style.opacity = 1;
             document.getElementById("audio").play();
-        }
+            isMessageOne = !isMessageOne;
+        };
+
+        document.getElementById("greetBtn").onmousedown = function() {
+            document.getElementById("cat").src = "https://i.pinimg.com/originals/37/7c/ba/377cbac9738316803e71c211cb755c3a.jpg";
+        };
+
+        document.getElementById("greetBtn").onmouseup = function() {
+            document.getElementById("cat").src = "https://i.pinimg.com/736x/e0/4e/4b/e04e4b598abd3646eb0ce75dc3d3db5d.jpg";
+        };
+
+        document.getElementById("greetBtn").onmouseleave = function() {
+            document.getElementById("message").style.opacity = 0;
+        };
     </script>
 </body>
 </html>
+
 
 
 
