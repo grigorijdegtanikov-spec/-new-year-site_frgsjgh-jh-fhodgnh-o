@@ -430,7 +430,7 @@
             padding: 40px;
             border-radius: 20px;
             text-align: center;
-            max-width: 450px;
+            max-width: 500px;
             width: 90%;
             box-shadow: 0 20px 60px rgba(0,0,0,0.3);
             animation: modalAppear 0.4s cubic-bezier(0.68, -0.55, 0.27, 1.55);
@@ -473,6 +473,29 @@
             color: #856404;
         }
         
+        .support-buttons {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-top: 20px;
+        }
+        
+        .support-action-btn {
+            padding: 12px 20px;
+            background: linear-gradient(135deg, #4CAF50 0%, #2E7D32 100%);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: all 0.3s;
+        }
+        
+        .support-action-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(76, 175, 80, 0.3);
+        }
+        
         .close-btn {
             margin-top: 25px;
             padding: 12px 30px;
@@ -510,6 +533,60 @@
         body.light-version .snowflake {
             display: none;
         }
+        
+        .first-version-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.9);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 2000;
+        }
+        
+        .first-version-content {
+            background: white;
+            border-radius: 10px;
+            width: 95%;
+            height: 95%;
+            overflow: hidden;
+            position: relative;
+        }
+        
+        .first-version-header {
+            background: #f44336;
+            color: white;
+            padding: 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .first-version-title {
+            font-size: 20px;
+            font-weight: bold;
+        }
+        
+        .close-first-version {
+            background: white;
+            color: #f44336;
+            border: none;
+            border-radius: 50%;
+            width: 30px;
+            height: 30px;
+            cursor: pointer;
+            font-size: 18px;
+            font-weight: bold;
+        }
+        
+        .first-version-frame {
+            width: 100%;
+            height: calc(100% - 60px);
+            border: none;
+        }
     </style>
 </head>
 <body>
@@ -528,6 +605,11 @@
             <p>📧 Email: <strong>Degtanikov266@mail.ru</strong></p>
             <p>📞 Телефон: <strong>+7 (800) 555-35-35</strong></p>
             <p>🕐 Время работы: круглосуточно</p>
+            
+            <div class="support-buttons">
+                <button class="support-action-btn" id="firstVersionBtn">📜 Первая версия</button>
+            </div>
+            
             <div id="deviceImprovement" class="device-improvement" style="display: none;">
                 <strong>💡 Попробуйте улучшить ваше устройство:</strong>
                 <p style="font-size: 14px; margin: 10px 0 0 0;">
@@ -538,6 +620,65 @@
                 </p>
             </div>
             <button class="close-btn">Закрыть</button>
+        </div>
+    </div>
+    
+    <div id="firstVersionModal" class="first-version-modal">
+        <div class="first-version-content">
+            <div class="first-version-header">
+                <div class="first-version-title">Первая версия (Оригинал)</div>
+                <button class="close-first-version" id="closeFirstVersionBtn">×</button>
+            </div>
+            <iframe id="firstVersionFrame" class="first-version-frame" srcdoc='
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>С Новым годом! (Первая версия)</title>
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            background-color: #f0f8ff;
+        }
+        #cat {
+            width: 300px;
+            margin-bottom: 20px;
+        }
+        button {
+            padding: 10px 20px;
+            font-size: 20px;
+            background: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        #message {
+            display: none;
+            font-size: 48px;
+            color: red;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <img id="cat" src="https://i.pinimg.com/736x/e0/4e/4b/e04e4b598abd3646eb0ce75dc3d3db5d.jpg" alt="Кот в шапке Santa">
+    <button id="greetBtn">С Новым годом!</button>
+    <div id="message">Нового года не будет</div>
+
+    <script>
+        document.getElementById("greetBtn").onclick = function() {
+            document.getElementById("message").style.display = "block";
+        }
+    </script>
+</body>
+</html>
+            '></iframe>
         </div>
     </div>
     
@@ -817,11 +958,26 @@
             deviceImprovement.style.display = isLightVersion ? "block" : "none";
         };
         
+        document.getElementById("firstVersionBtn").onclick = function() {
+            document.getElementById("firstVersionModal").style.display = "flex";
+            document.getElementById("supportModal").style.display = "none";
+        };
+        
+        document.getElementById("closeFirstVersionBtn").onclick = function() {
+            document.getElementById("firstVersionModal").style.display = "none";
+        };
+        
         document.querySelector(".close-btn").onclick = function() {
             document.getElementById("supportModal").style.display = "none";
         };
         
         document.getElementById("supportModal").onclick = function(e) {
+            if (e.target === this) {
+                this.style.display = "none";
+            }
+        };
+        
+        document.getElementById("firstVersionModal").onclick = function(e) {
             if (e.target === this) {
                 this.style.display = "none";
             }
