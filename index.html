@@ -19,6 +19,105 @@
             overflow: hidden;
         }
         
+        body.light-version {
+            background: #f0f8ff;
+            overflow: auto;
+        }
+        
+        body.light-version::before {
+            display: none;
+        }
+        
+        body.light-version #cat {
+            transition: none;
+        }
+        
+        body.light-version #settingsBtn {
+            background: #4CAF50;
+            box-shadow: none;
+            border-radius: 5px;
+        }
+        
+        body.light-version #settingsBtn:hover {
+            transform: none;
+            box-shadow: none;
+        }
+        
+        body.light-version #settingsPanel {
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            animation: none;
+        }
+        
+        body.light-version .settingsButton {
+            background: #2196F3;
+            border-radius: 3px;
+        }
+        
+        body.light-version .settingsButton:hover {
+            transform: none;
+            box-shadow: none;
+        }
+        
+        body.light-version #greetBtn {
+            background: #4CAF50;
+            box-shadow: none;
+            border-radius: 5px;
+        }
+        
+        body.light-version #greetBtn:hover {
+            transform: none;
+            box-shadow: none;
+        }
+        
+        body.light-version #changeModeBtn {
+            background: #FF9800;
+            box-shadow: none;
+        }
+        
+        body.light-version #changeModeBtn:hover {
+            transform: none;
+            box-shadow: none;
+        }
+        
+        body.light-version #message {
+            background: none;
+            -webkit-text-fill-color: #2c3e50;
+            color: #2c3e50;
+            text-shadow: none;
+        }
+        
+        body.light-version .support-modal {
+            background-color: rgba(0,0,0,0.5);
+        }
+        
+        body.light-version .support-content {
+            background: white;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            animation: none;
+        }
+        
+        body.light-version .support-content h2 {
+            background: none;
+            -webkit-text-fill-color: #2c3e50;
+            color: #2c3e50;
+        }
+        
+        body.light-version .close-btn {
+            background: #f44336;
+            box-shadow: none;
+            border-radius: 5px;
+        }
+        
+        body.light-version .close-btn:hover {
+            transform: none;
+            box-shadow: none;
+        }
+        
+        body.light-version .snowflake {
+            display: none;
+        }
+        
         body::before {
             content: '';
             position: absolute;
@@ -62,7 +161,7 @@
             display: none;
             box-shadow: 0 8px 25px rgba(0,0,0,0.15);
             z-index: 100;
-            min-width: 180px;
+            min-width: 200px;
             animation: slideDown 0.3s ease-out;
         }
         
@@ -128,6 +227,14 @@
         
         .mobile-layout #changeModeBtn {
             display: block;
+        }
+        
+        .mobile-layout.light-version #changeModeBtn {
+            border-radius: 5px;
+            width: auto;
+            height: auto;
+            padding: 10px 20px;
+            font-size: 16px;
         }
         
         .buttons {
@@ -262,6 +369,18 @@
             }
         }
         
+        body.light-version .message-appear,
+        body.light-version .message-change,
+        body.light-version .message-disappear {
+            animation: none !important;
+            opacity: 1 !important;
+            transform: none !important;
+        }
+        
+        body.light-version .cat-changing {
+            transform: none !important;
+        }
+        
         .mobile-layout {
             padding: 20px;
             box-sizing: border-box;
@@ -345,6 +464,15 @@
             line-height: 1.6;
         }
         
+        .device-improvement {
+            margin-top: 20px;
+            padding: 15px;
+            background: #fff3cd;
+            border: 1px solid #ffeaa7;
+            border-radius: 8px;
+            color: #856404;
+        }
+        
         .close-btn {
             margin-top: 25px;
             padding: 12px 30px;
@@ -378,6 +506,10 @@
                 transform: translateY(100vh) rotate(360deg);
             }
         }
+        
+        body.light-version .snowflake {
+            display: none;
+        }
     </style>
 </head>
 <body>
@@ -385,6 +517,7 @@
     
     <div id="settingsPanel">
         <button class="settingsButton" id="mobileModeBtn">📱 Версия для телефона</button>
+        <button class="settingsButton" id="lightVersionBtn">⚡ Облегчённая версия</button>
         <button class="settingsButton" id="supportBtn">🆘 Служба поддержки</button>
     </div>
     
@@ -395,6 +528,15 @@
             <p>📧 Email: <strong>Degtanikov266@mail.ru</strong></p>
             <p>📞 Телефон: <strong>+7 (800) 555-35-35</strong></p>
             <p>🕐 Время работы: круглосуточно</p>
+            <div id="deviceImprovement" class="device-improvement" style="display: none;">
+                <strong>💡 Попробуйте улучшить ваше устройство:</strong>
+                <p style="font-size: 14px; margin: 10px 0 0 0;">
+                    1. Обновите браузер до последней версии<br>
+                    2. Очистите кэш браузера<br>
+                    3. Проверьте доступную оперативную память<br>
+                    4. Отключите ненужные расширения
+                </p>
+            </div>
             <button class="close-btn">Закрыть</button>
         </div>
     </div>
@@ -416,11 +558,13 @@
         let isChangedMode = false;
         let isHolding = false;
         let messageTimeout;
+        let isLightVersion = false;
         const originalCat = "https://i.pinimg.com/736x/e0/4e/4b/e04e4b598abd3646eb0ce75dc3d3db5d.jpg";
         const changedCat = "https://i.pinimg.com/originals/37/7c/ba/377cbac9738316803e71c211cb755c3a.jpg";
         
-        // Создаем снежинки
         function createSnowflakes() {
+            if (isLightVersion) return;
+            
             const snowflakes = ['❄️', '✨', '⭐', '❅', '❆'];
             for (let i = 0; i < 30; i++) {
                 setTimeout(() => {
@@ -434,78 +578,84 @@
                     snowflake.style.animationDelay = Math.random() * 5 + 's';
                     document.body.appendChild(snowflake);
                     
-                    // Удаляем снежинку после анимации
                     setTimeout(() => {
-                        snowflake.remove();
+                        if (snowflake.parentNode) {
+                            snowflake.remove();
+                        }
                     }, 15000);
                 }, i * 300);
             }
         }
         
-        // Запускаем снег
-        createSnowflakes();
-        setInterval(createSnowflakes, 20000);
+        if (!isLightVersion) {
+            createSnowflakes();
+            setInterval(createSnowflakes, 20000);
+        }
         
-        // Анимация появления/смены текста
         function animateMessage(newText, isChange = false) {
             const messageElement = document.getElementById("message");
             
-            // Очищаем предыдущий таймер скрытия
             if (messageTimeout) {
                 clearTimeout(messageTimeout);
             }
             
-            // Сбрасываем анимацию исчезновения
             messageElement.classList.remove("message-disappear");
             messageElement.style.display = "block";
             messageElement.style.opacity = "1";
             
-            if (isChange) {
+            if (isLightVersion) {
                 messageElement.textContent = newText;
-                messageElement.classList.remove("message-appear");
-                void messageElement.offsetWidth; // Сброс анимации
-                messageElement.classList.add("message-change");
-                
-                setTimeout(() => {
-                    messageElement.classList.remove("message-change");
-                }, 600);
             } else {
-                messageElement.textContent = newText;
-                messageElement.classList.remove("message-change");
-                void messageElement.offsetWidth;
-                messageElement.classList.add("message-appear");
-                
-                setTimeout(() => {
+                if (isChange) {
+                    messageElement.textContent = newText;
                     messageElement.classList.remove("message-appear");
-                }, 800);
+                    void messageElement.offsetWidth;
+                    messageElement.classList.add("message-change");
+                    
+                    setTimeout(() => {
+                        messageElement.classList.remove("message-change");
+                    }, 600);
+                } else {
+                    messageElement.textContent = newText;
+                    messageElement.classList.remove("message-change");
+                    void messageElement.offsetWidth;
+                    messageElement.classList.add("message-appear");
+                    
+                    setTimeout(() => {
+                        messageElement.classList.remove("message-appear");
+                    }, 800);
+                }
             }
             
-            // Устанавливаем таймер для скрытия текста через 10 секунд
             messageTimeout = setTimeout(() => {
                 hideMessage();
             }, 10000);
         }
         
-        // Функция скрытия сообщения
         function hideMessage() {
             const messageElement = document.getElementById("message");
-            messageElement.classList.add("message-disappear");
             
-            // Через секунду после начала анимации скрытия полностью скрываем элемент
-            setTimeout(() => {
+            if (isLightVersion) {
                 messageElement.style.display = "none";
-                messageElement.classList.remove("message-disappear");
-            }, 1000);
+            } else {
+                messageElement.classList.add("message-disappear");
+                
+                setTimeout(() => {
+                    messageElement.style.display = "none";
+                    messageElement.classList.remove("message-disappear");
+                }, 1000);
+            }
         }
         
-        // Основная кнопка "С Новым годом!"
         document.getElementById("greetBtn").onclick = function() {
-            const cat = document.getElementById("cat");
-            cat.classList.add("cat-changing");
-            
-            setTimeout(() => {
-                cat.classList.remove("cat-changing");
-            }, 800);
+            if (!isLightVersion) {
+                const cat = document.getElementById("cat");
+                cat.classList.add("cat-changing");
+                
+                setTimeout(() => {
+                    cat.classList.remove("cat-changing");
+                }, 800);
+            }
             
             if (isMessageOne) {
                 animateMessage("🎉 Новый год будет! 🎉", false);
@@ -513,65 +663,80 @@
                 animateMessage("😢 Нового года не будет", false);
             }
             
-            // Воспроизводим музыку, если файл существует
             const audio = document.getElementById("audio");
             audio.play().catch(e => console.log("Аудио не воспроизводится:", e));
             
             isMessageOne = !isMessageOne;
         };
         
-        // Кнопка смены режима (только в мобильной версии)
         document.getElementById("changeModeBtn").onclick = function() {
             if (isMobileMode) {
                 isChangedMode = !isChangedMode;
                 const cat = document.getElementById("cat");
                 
-                // Анимация смены картинки
-                cat.style.transform = "scale(0.9) rotate(-10deg)";
-                cat.style.opacity = "0.7";
-                
-                setTimeout(() => {
+                if (isLightVersion) {
                     cat.src = isChangedMode ? changedCat : originalCat;
                     
+                    isMessageOne = !isChangedMode;
+                    if (isChangedMode) {
+                        animateMessage("🎉 Новый год будет! 🎉", false);
+                    } else {
+                        animateMessage("😢 Нового года не будет", false);
+                    }
+                } else {
+                    cat.style.transform = "scale(0.9) rotate(-10deg)";
+                    cat.style.opacity = "0.7";
+                    
                     setTimeout(() => {
-                        cat.style.transform = "scale(1) rotate(0deg)";
-                        cat.style.opacity = "1";
+                        cat.src = isChangedMode ? changedCat : originalCat;
                         
-                        // Меняем сообщение на противоположное при смене режима
-                        isMessageOne = !isChangedMode;
-                        if (isChangedMode) {
-                            animateMessage("🎉 Новый год будет! 🎉", true);
-                        } else {
-                            animateMessage("😢 Нового года не будет", true);
-                        }
-                    }, 50);
-                }, 300);
+                        setTimeout(() => {
+                            cat.style.transform = "scale(1) rotate(0deg)";
+                            cat.style.opacity = "1";
+                            
+                            isMessageOne = !isChangedMode;
+                            if (isChangedMode) {
+                                animateMessage("🎉 Новый год будет! 🎉", true);
+                            } else {
+                                animateMessage("😢 Нового года не будет", true);
+                            }
+                        }, 50);
+                    }, 300);
+                }
             }
         };
         
-        // Удержание кнопки (оригинальная функциональность)
         document.getElementById("greetBtn").onmousedown = function() {
             isHolding = true;
-            const btn = this;
-            btn.style.background = "linear-gradient(135deg, #FF9800 0%, #F57C00 100%)";
+            
+            if (!isLightVersion) {
+                const btn = this;
+                btn.style.background = "linear-gradient(135deg, #FF9800 0%, #F57C00 100%)";
+            }
             
             holdTimer = setTimeout(function() {
                 const cat = document.getElementById("cat");
-                cat.classList.add("cat-changing");
+                if (!isLightVersion) {
+                    cat.classList.add("cat-changing");
+                }
                 cat.src = changedCat;
-                // После 5 секунд удержания картинка не пропадает
-                btn.style.background = "linear-gradient(135deg, #4CAF50 0%, #2E7D32 100%)";
                 
-                // Показываем сообщение при удержании
+                if (!isLightVersion) {
+                    const btn = document.getElementById("greetBtn");
+                    btn.style.background = "linear-gradient(135deg, #4CAF50 0%, #2E7D32 100%)";
+                }
+                
                 animateMessage("✨ Ты держишь кнопку 5 секунд! ✨", false);
             }, 5000);
         };
         
         document.getElementById("greetBtn").onmouseup = function() {
             clearTimeout(holdTimer);
-            this.style.background = "linear-gradient(135deg, #4CAF50 0%, #2E7D32 100%)";
             
-            // В обычном режиме возвращаем оригинальную картинку только если удержание не длилось 5 секунд
+            if (!isLightVersion) {
+                this.style.background = "linear-gradient(135deg, #4CAF50 0%, #2E7D32 100%)";
+            }
+            
             if (!isHolding || isMobileMode) {
                 if (!isMobileMode && !isChangedMode) {
                     const cat = document.getElementById("cat");
@@ -585,17 +750,19 @@
         
         document.getElementById("greetBtn").onmouseleave = function() {
             clearTimeout(holdTimer);
-            this.style.background = "linear-gradient(135deg, #4CAF50 0%, #2E7D32 100%)";
+            
+            if (!isLightVersion) {
+                this.style.background = "linear-gradient(135deg, #4CAF50 0%, #2E7D32 100%)";
+            }
+            
             isHolding = false;
         };
         
-        // Настройки
         document.getElementById("settingsBtn").onclick = function() {
             const panel = document.getElementById("settingsPanel");
             panel.style.display = panel.style.display === "block" ? "none" : "block";
         };
         
-        // Версия для телефона
         document.getElementById("mobileModeBtn").onclick = function() {
             isMobileMode = !isMobileMode;
             const body = document.body;
@@ -606,7 +773,6 @@
             } else {
                 body.classList.remove("mobile-layout");
                 document.getElementById("mobileModeBtn").textContent = "📱 Версия для телефона";
-                // При возврате к обычной версии сбрасываем режим
                 isChangedMode = false;
                 document.getElementById("cat").src = originalCat;
                 document.getElementById("greetBtn").textContent = "🎅 С Новым годом! 🎄";
@@ -615,24 +781,52 @@
             document.getElementById("settingsPanel").style.display = "none";
         };
         
-        // Служба поддержки
+        document.getElementById("lightVersionBtn").onclick = function() {
+            isLightVersion = !isLightVersion;
+            const body = document.body;
+            
+            if (isLightVersion) {
+                body.classList.add("light-version");
+                document.getElementById("lightVersionBtn").textContent = "✨ Полная версия";
+                
+                if (isMobileMode) {
+                    document.getElementById("changeModeBtn").textContent = "Сменить режим";
+                }
+                
+                const snowflakes = document.querySelectorAll('.snowflake');
+                snowflakes.forEach(snowflake => snowflake.remove());
+            } else {
+                body.classList.remove("light-version");
+                document.getElementById("lightVersionBtn").textContent = "⚡ Облегчённая версия";
+                
+                if (isMobileMode) {
+                    document.getElementById("changeModeBtn").textContent = "🎭";
+                }
+                
+                createSnowflakes();
+            }
+            
+            document.getElementById("settingsPanel").style.display = "none";
+        };
+        
         document.getElementById("supportBtn").onclick = function() {
             document.getElementById("supportModal").style.display = "flex";
             document.getElementById("settingsPanel").style.display = "none";
+            
+            const deviceImprovement = document.getElementById("deviceImprovement");
+            deviceImprovement.style.display = isLightVersion ? "block" : "none";
         };
         
         document.querySelector(".close-btn").onclick = function() {
             document.getElementById("supportModal").style.display = "none";
         };
         
-        // Закрытие модального окна при клике вне его
         document.getElementById("supportModal").onclick = function(e) {
             if (e.target === this) {
                 this.style.display = "none";
             }
         };
         
-        // Закрытие панели настроек при клике вне ее
         document.addEventListener('click', function(e) {
             const settingsPanel = document.getElementById('settingsPanel');
             const settingsBtn = document.getElementById('settingsBtn');
@@ -645,6 +839,7 @@
     </script>
 </body>
 </html>
+
 
 
 
