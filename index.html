@@ -12,16 +12,81 @@
             justify-content: center;
             height: 100vh;
             background-color: #f0f8ff;
+            margin: 0;
+            position: relative;
+            transition: all 0.3s;
         }
+        
+        #settingsBtn {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            padding: 10px 15px;
+            font-size: 16px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            z-index: 100;
+        }
+        
+        #settingsPanel {
+            position: absolute;
+            top: 60px;
+            right: 20px;
+            background-color: white;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            padding: 15px;
+            display: none;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            z-index: 100;
+        }
+        
+        .settingsButton {
+            display: block;
+            width: 100%;
+            padding: 10px;
+            margin: 5px 0;
+            background-color: #2196F3;
+            color: white;
+            border: none;
+            border-radius: 3px;
+            cursor: pointer;
+        }
+        
         #cat {
             width: 300px;
             margin-bottom: 20px;
             transition: 0.5s;
         }
+        
+        .buttons {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+        
         button {
             padding: 10px 20px;
             font-size: 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: 0.3s;
         }
+        
+        #greetBtn {
+            background-color: #4CAF50;
+            color: white;
+        }
+        
+        #changeModeBtn {
+            background-color: #FF9800;
+            color: white;
+        }
+        
         #message {
             display: none;
             font-size: 48px;
@@ -29,19 +94,103 @@
             margin-top: 20px;
             opacity: 0;
             transition: opacity 0.5s;
+            text-align: center;
+        }
+        
+        .mobile-layout {
+            padding: 20px;
+            box-sizing: border-box;
+        }
+        
+        .mobile-layout #cat {
+            width: 250px;
+        }
+        
+        .mobile-layout .buttons {
+            flex-direction: column;
+            width: 100%;
+            max-width: 300px;
+        }
+        
+        .mobile-layout button {
+            width: 100%;
+            font-size: 18px;
+        }
+        
+        .mobile-layout #message {
+            font-size: 36px;
+        }
+        
+        .support-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.5);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+        
+        .support-content {
+            background-color: white;
+            padding: 30px;
+            border-radius: 10px;
+            text-align: center;
+            max-width: 400px;
+            width: 90%;
+        }
+        
+        .close-btn {
+            margin-top: 20px;
+            padding: 10px 20px;
+            background-color: #f44336;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
         }
     </style>
 </head>
 <body>
+    <button id="settingsBtn">Настройки</button>
+    
+    <div id="settingsPanel">
+        <button class="settingsButton" id="mobileModeBtn">Версия для телефона</button>
+        <button class="settingsButton" id="supportBtn">Служба поддержки</button>
+    </div>
+    
+    <div id="supportModal" class="support-modal">
+        <div class="support-content">
+            <h2>Служба поддержки</h2>
+            <p>Если у вас возникли проблемы с работой приложения, свяжитесь с нами:</p>
+            <p>Email: support@newyearapp.ru</p>
+            <p>Телефон: +7 (800) 123-45-67</p>
+            <button class="close-btn">Закрыть</button>
+        </div>
+    </div>
+    
     <img id="cat" src="https://i.pinimg.com/736x/e0/4e/4b/e04e4b598abd3646eb0ce75dc3d3db5d.jpg" alt="Кот в шапке Santa">
-    <button id="greetBtn">С Новым годом!</button>
+    
+    <div class="buttons">
+        <button id="greetBtn">С Новым годом!</button>
+        <button id="changeModeBtn">Сменить режим</button>
+    </div>
+    
     <audio id="audio" src="new_year_music.mp3"></audio>
     <div id="message">Нового года не будет</div>
 
     <script>
         let isMessageOne = true;
         let holdTimer;
-
+        let isMobileMode = false;
+        let isChangedMode = false;
+        const originalCat = "https://i.pinimg.com/736x/e0/4e/4b/e04e4b598abd3646eb0ce75dc3d3db5d.jpg";
+        const changedCat = "https://i.pinimg.com/originals/37/7c/ba/377cbac9738316803e71c211cb755c3a.jpg";
+        
+        // Основная кнопка "С Новым годом!"
         document.getElementById("greetBtn").onclick = function() {
             const messageElement = document.getElementById("message");
             messageElement.style.display = "block";
@@ -51,26 +200,99 @@
             } else {
                 messageElement.textContent = "Нового года не будет";
             }
-
+            
             messageElement.style.opacity = 1;
-            document.getElementById("audio").play();
+            
+            // Воспроизводим музыку, если файл существует
+            const audio = document.getElementById("audio");
+            audio.play().catch(e => console.log("Аудио не воспроизводится:", e));
+            
             isMessageOne = !isMessageOne;
         };
-
+        
+        // Кнопка смены режима
+        document.getElementById("changeModeBtn").onclick = function() {
+            isChangedMode = !isChangedMode;
+            const cat = document.getElementById("cat");
+            
+            if (isChangedMode) {
+                cat.src = changedCat;
+                document.getElementById("greetBtn").textContent = "С Новым годом! (Режим 2)";
+                // В измененном режиме всегда показываем "Новый год будет"
+                isMessageOne = true;
+            } else {
+                cat.src = originalCat;
+                document.getElementById("greetBtn").textContent = "С Новым годом!";
+            }
+        };
+        
+        // Удержание кнопки (оригинальная функциональность)
         document.getElementById("greetBtn").onmousedown = function() {
             holdTimer = setTimeout(function() {
-                document.getElementById("cat").src = "https://i.pinimg.com/originals/37/7c/ba/377cbac9738316803e71c211cb755c3a.jpg";
-            }, 5000); // Изменение изображения через 5 секунд
+                document.getElementById("cat").src = changedCat;
+            }, 5000);
         };
-
+        
         document.getElementById("greetBtn").onmouseup = function() {
-            clearTimeout(holdTimer); // Отменяем таймер, если кнопка отпущена
-            document.getElementById("cat").src = "https://i.pinimg.com/736x/e0/4e/4b/e04e4b598abd3646eb0ce75dc3d3db5d.jpg"; // Возврат к оригинальному изображению
+            clearTimeout(holdTimer);
+            if (!isChangedMode) {
+                document.getElementById("cat").src = originalCat;
+            }
         };
-
+        
         document.getElementById("greetBtn").onmouseleave = function() {
-            clearTimeout(holdTimer); // Отменяем таймер, если указатель мыши покидает кнопку
+            clearTimeout(holdTimer);
         };
+        
+        // Настройки
+        document.getElementById("settingsBtn").onclick = function() {
+            const panel = document.getElementById("settingsPanel");
+            panel.style.display = panel.style.display === "block" ? "none" : "block";
+        };
+        
+        // Версия для телефона
+        document.getElementById("mobileModeBtn").onclick = function() {
+            isMobileMode = !isMobileMode;
+            const body = document.body;
+            
+            if (isMobileMode) {
+                body.classList.add("mobile-layout");
+                document.getElementById("mobileModeBtn").textContent = "Обычная версия";
+                document.getElementById("changeModeBtn").style.display = "block";
+            } else {
+                body.classList.remove("mobile-layout");
+                document.getElementById("mobileModeBtn").textContent = "Версия для телефона";
+            }
+            
+            document.getElementById("settingsPanel").style.display = "none";
+        };
+        
+        // Служба поддержки
+        document.getElementById("supportBtn").onclick = function() {
+            document.getElementById("supportModal").style.display = "flex";
+            document.getElementById("settingsPanel").style.display = "none";
+        };
+        
+        document.querySelector(".close-btn").onclick = function() {
+            document.getElementById("supportModal").style.display = "none";
+        };
+        
+        // Закрытие модального окна при клике вне его
+        document.getElementById("supportModal").onclick = function(e) {
+            if (e.target === this) {
+                this.style.display = "none";
+            }
+        };
+        
+        // Закрытие панели настроек при клике вне ее
+        document.addEventListener('click', function(e) {
+            const settingsPanel = document.getElementById('settingsPanel');
+            const settingsBtn = document.getElementById('settingsBtn');
+            
+            if (!settingsPanel.contains(e.target) && !settingsBtn.contains(e.target)) {
+                settingsPanel.style.display = 'none';
+            }
+        });
     </script>
 </body>
 </html>
