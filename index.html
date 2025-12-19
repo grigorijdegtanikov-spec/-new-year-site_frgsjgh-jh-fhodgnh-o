@@ -18,7 +18,7 @@
         }
         
         #settingsBtn {
-            position: absolute;
+            position: fixed;
             top: 20px;
             right: 20px;
             padding: 10px 15px;
@@ -32,7 +32,7 @@
         }
         
         #settingsPanel {
-            position: absolute;
+            position: fixed;
             top: 60px;
             right: 20px;
             background-color: white;
@@ -42,6 +42,7 @@
             display: none;
             box-shadow: 0 2px 10px rgba(0,0,0,0.1);
             z-index: 100;
+            min-width: 180px;
         }
         
         .settingsButton {
@@ -54,12 +55,21 @@
             border: none;
             border-radius: 3px;
             cursor: pointer;
+            font-size: 14px;
         }
         
         #cat {
             width: 300px;
             margin-bottom: 20px;
             transition: 0.5s;
+        }
+        
+        #changeModeBtn {
+            display: none;
+        }
+        
+        .mobile-layout #changeModeBtn {
+            display: block;
         }
         
         .buttons {
@@ -166,8 +176,8 @@
         <div class="support-content">
             <h2>Служба поддержки</h2>
             <p>Если у вас возникли проблемы с работой приложения, свяжитесь с нами:</p>
-            <p>Email: support@newyearapp.ru</p>
-            <p>Телефон: +7 (800) 123-45-67</p>
+            <p>📧 Email: support@newyearapp.ru</p>
+            <p>📞 Телефон: +7 (800) 555-35-35</p>
             <button class="close-btn">Закрыть</button>
         </div>
     </div>
@@ -187,6 +197,7 @@
         let holdTimer;
         let isMobileMode = false;
         let isChangedMode = false;
+        let isHolding = false;
         const originalCat = "https://i.pinimg.com/736x/e0/4e/4b/e04e4b598abd3646eb0ce75dc3d3db5d.jpg";
         const changedCat = "https://i.pinimg.com/originals/37/7c/ba/377cbac9738316803e71c211cb755c3a.jpg";
         
@@ -210,38 +221,47 @@
             isMessageOne = !isMessageOne;
         };
         
-        // Кнопка смены режима
+        // Кнопка смены режима (только в мобильной версии)
         document.getElementById("changeModeBtn").onclick = function() {
-            isChangedMode = !isChangedMode;
-            const cat = document.getElementById("cat");
-            
-            if (isChangedMode) {
-                cat.src = changedCat;
-                document.getElementById("greetBtn").textContent = "С Новым годом! (Режим 2)";
-                // В измененном режиме всегда показываем "Новый год будет"
-                isMessageOne = true;
-            } else {
-                cat.src = originalCat;
-                document.getElementById("greetBtn").textContent = "С Новым годом!";
+            if (isMobileMode) {
+                isChangedMode = !isChangedMode;
+                const cat = document.getElementById("cat");
+                
+                if (isChangedMode) {
+                    cat.src = changedCat;
+                    document.getElementById("greetBtn").textContent = "С Новым годом! (Режим 2)";
+                    // В измененном режиме всегда показываем "Новый год будет"
+                    isMessageOne = true;
+                } else {
+                    cat.src = originalCat;
+                    document.getElementById("greetBtn").textContent = "С Новым годом!";
+                }
             }
         };
         
         // Удержание кнопки (оригинальная функциональность)
         document.getElementById("greetBtn").onmousedown = function() {
+            isHolding = true;
             holdTimer = setTimeout(function() {
                 document.getElementById("cat").src = changedCat;
+                // После 5 секунд удержания картинка не пропадает
             }, 5000);
         };
         
         document.getElementById("greetBtn").onmouseup = function() {
             clearTimeout(holdTimer);
-            if (!isChangedMode) {
-                document.getElementById("cat").src = originalCat;
+            // В обычном режиме возвращаем оригинальную картинку только если удержание не длилось 5 секунд
+            if (!isHolding || isMobileMode) {
+                if (!isMobileMode && !isChangedMode) {
+                    document.getElementById("cat").src = originalCat;
+                }
             }
+            isHolding = false;
         };
         
         document.getElementById("greetBtn").onmouseleave = function() {
             clearTimeout(holdTimer);
+            isHolding = false;
         };
         
         // Настройки
@@ -258,10 +278,13 @@
             if (isMobileMode) {
                 body.classList.add("mobile-layout");
                 document.getElementById("mobileModeBtn").textContent = "Обычная версия";
-                document.getElementById("changeModeBtn").style.display = "block";
             } else {
                 body.classList.remove("mobile-layout");
                 document.getElementById("mobileModeBtn").textContent = "Версия для телефона";
+                // При возврате к обычной версии сбрасываем режим
+                isChangedMode = false;
+                document.getElementById("cat").src = originalCat;
+                document.getElementById("greetBtn").textContent = "С Новым годом!";
             }
             
             document.getElementById("settingsPanel").style.display = "none";
@@ -289,13 +312,15 @@
             const settingsPanel = document.getElementById('settingsPanel');
             const settingsBtn = document.getElementById('settingsBtn');
             
-            if (!settingsPanel.contains(e.target) && !settingsBtn.contains(e.target)) {
+            if (settingsPanel && !settingsPanel.contains(e.target) && 
+                settingsBtn && !settingsBtn.contains(e.target)) {
                 settingsPanel.style.display = 'none';
             }
         });
     </script>
 </body>
 </html>
+
 
 
 
