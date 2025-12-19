@@ -40,6 +40,7 @@
 
     <script>
         let isMessageOne = true;
+        let holdTimer;
 
         document.getElementById("greetBtn").onclick = function() {
             const messageElement = document.getElementById("message");
@@ -57,19 +58,23 @@
         };
 
         document.getElementById("greetBtn").onmousedown = function() {
-            document.getElementById("cat").src = "https://i.pinimg.com/originals/37/7c/ba/377cbac9738316803e71c211cb755c3a.jpg";
+            holdTimer = setTimeout(function() {
+                document.getElementById("cat").src = "https://i.pinimg.com/originals/37/7c/ba/377cbac9738316803e71c211cb755c3a.jpg";
+            }, 5000); // Изменение изображения через 5 секунд
         };
 
         document.getElementById("greetBtn").onmouseup = function() {
-            document.getElementById("cat").src = "https://i.pinimg.com/736x/e0/4e/4b/e04e4b598abd3646eb0ce75dc3d3db5d.jpg";
+            clearTimeout(holdTimer); // Отменяем таймер, если кнопка отпущена
+            document.getElementById("cat").src = "https://i.pinimg.com/736x/e0/4e/4b/e04e4b598abd3646eb0ce75dc3d3db5d.jpg"; // Возврат к оригинальному изображению
         };
 
         document.getElementById("greetBtn").onmouseleave = function() {
-            document.getElementById("message").style.opacity = 0;
+            clearTimeout(holdTimer); // Отменяем таймер, если указатель мыши покидает кнопку
         };
     </script>
 </body>
 </html>
+
 
 
 
