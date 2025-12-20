@@ -5,164 +5,67 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>С Новым годом!</title>
     <style>
+        /* Стили для обычной (современной) версии */
         body {
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            height: 100vh;
-            background-color: #f0f8ff;
+            min-height: 100vh;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             margin: 0;
             position: relative;
-            transition: all 0.3s;
-            background: linear-gradient(135deg, #f0f8ff 0%, #e6f7ff 100%);
-            overflow: hidden;
-        }
-        
-        body.light-version {
-            background: #f0f8ff;
-            overflow: auto;
-        }
-        
-        body.light-version::before {
-            display: none;
-        }
-        
-        body.light-version #cat {
-            transition: none;
-        }
-        
-        body.light-version #settingsBtn {
-            background: #4CAF50;
-            box-shadow: none;
-            border-radius: 5px;
-        }
-        
-        body.light-version #settingsBtn:hover {
-            transform: none;
-            box-shadow: none;
-        }
-        
-        body.light-version #settingsPanel {
-            border-radius: 5px;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-            animation: none;
-        }
-        
-        body.light-version .settingsButton {
-            background: #2196F3;
-            border-radius: 3px;
-        }
-        
-        body.light-version .settingsButton:hover {
-            transform: none;
-            box-shadow: none;
-        }
-        
-        body.light-version #greetBtn {
-            background: #4CAF50;
-            box-shadow: none;
-            border-radius: 5px;
-        }
-        
-        body.light-version #greetBtn:hover {
-            transform: none;
-            box-shadow: none;
-        }
-        
-        body.light-version #changeModeBtn {
-            background: #FF9800;
-            box-shadow: none;
-        }
-        
-        body.light-version #changeModeBtn:hover {
-            transform: none;
-            box-shadow: none;
-        }
-        
-        body.light-version #message {
-            background: none;
-            -webkit-text-fill-color: #2c3e50;
-            color: #2c3e50;
-            text-shadow: none;
-        }
-        
-        body.light-version .support-modal {
-            background-color: rgba(0,0,0,0.5);
-        }
-        
-        body.light-version .support-content {
-            background: white;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-            animation: none;
-        }
-        
-        body.light-version .support-content h2 {
-            background: none;
-            -webkit-text-fill-color: #2c3e50;
-            color: #2c3e50;
-        }
-        
-        body.light-version .close-btn {
-            background: #f44336;
-            box-shadow: none;
-            border-radius: 5px;
-        }
-        
-        body.light-version .close-btn:hover {
-            transform: none;
-            box-shadow: none;
-        }
-        
-        body.light-version .snowflake {
-            display: none;
+            font-family: 'Arial', sans-serif;
+            padding: 20px;
+            box-sizing: border-box;
         }
         
         body::before {
             content: '';
-            position: absolute;
+            position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100"><polygon points="50,10 61,35 88,35 66,52 73,78 50,63 27,78 34,52 12,35 39,35" fill="%23ffd700" opacity="0.1"/></svg>');
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100"><polygon points="50,10 61,35 88,35 66,52 73,78 50,63 27,78 34,52 12,35 39,35" fill="%23ffffff" opacity="0.1"/></svg>');
             z-index: -1;
+            pointer-events: none;
         }
         
         #settingsBtn {
             position: fixed;
             top: 20px;
             right: 20px;
-            padding: 10px 15px;
+            padding: 12px 24px;
             font-size: 16px;
-            background: linear-gradient(135deg, #4CAF50 0%, #2E7D32 100%);
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             color: white;
             border: none;
             border-radius: 50px;
             cursor: pointer;
             z-index: 100;
-            box-shadow: 0 4px 15px rgba(76, 175, 80, 0.3);
-            transition: transform 0.3s, box-shadow 0.3s;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            transition: all 0.3s ease;
+            font-weight: 600;
         }
         
         #settingsBtn:hover {
             transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(76, 175, 80, 0.4);
+            box-shadow: 0 6px 20px rgba(0,0,0,0.3);
         }
         
         #settingsPanel {
             position: fixed;
-            top: 60px;
+            top: 70px;
             right: 20px;
-            background-color: white;
-            border: 1px solid #ddd;
+            background: white;
             border-radius: 15px;
-            padding: 15px;
+            padding: 20px;
             display: none;
-            box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+            box-shadow: 0 10px 40px rgba(0,0,0,0.15);
             z-index: 100;
             min-width: 200px;
-            animation: slideDown 0.3s ease-out;
+            animation: slideDown 0.3s ease;
         }
         
         @keyframes slideDown {
@@ -177,99 +80,93 @@
         }
         
         .settingsButton {
-            display: block;
+            display: flex;
+            align-items: center;
+            gap: 10px;
             width: 100%;
-            padding: 12px;
+            padding: 15px;
             margin: 8px 0;
-            background: linear-gradient(135deg, #2196F3 0%, #1976D2 100%);
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             color: white;
             border: none;
-            border-radius: 8px;
+            border-radius: 10px;
             cursor: pointer;
             font-size: 14px;
-            transition: transform 0.2s, box-shadow 0.2s;
+            font-weight: 600;
+            transition: all 0.3s ease;
         }
         
         .settingsButton:hover {
             transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(33, 150, 243, 0.3);
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
         }
         
         #cat {
-            width: 320px;
+            width: 300px;
             margin-bottom: 30px;
-            transition: all 0.8s cubic-bezier(0.68, -0.55, 0.27, 1.55);
-            filter: drop-shadow(0 10px 20px rgba(0,0,0,0.2));
             border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+            max-width: 90%;
         }
         
         .cat-changing {
-            transform: scale(1.1) rotate(5deg);
+            transform: scale(1.05) rotate(3deg);
         }
         
         #changeModeBtn {
-            display: none;
-            font-size: 28px;
-            width: 60px;
-            height: 60px;
-            padding: 0;
-            border-radius: 50%;
-            background: linear-gradient(135deg, #FF9800 0%, #F57C00 100%);
-            color: white;
-            box-shadow: 0 6px 20px rgba(255, 152, 0, 0.3);
-            transition: all 0.3s;
-        }
-        
-        #changeModeBtn:hover {
-            transform: rotate(180deg) scale(1.1);
-            box-shadow: 0 8px 25px rgba(255, 152, 0, 0.4);
-        }
-        
-        .mobile-layout #changeModeBtn {
-            display: block;
-        }
-        
-        .mobile-layout.light-version #changeModeBtn {
-            border-radius: 5px;
-            width: auto;
-            height: auto;
-            padding: 10px 20px;
-            font-size: 16px;
-        }
-        
-        .buttons {
-            display: flex;
-            gap: 20px;
-            margin-bottom: 30px;
-            align-items: center;
-        }
-        
-        button {
+            font-size: 24px;
             padding: 15px 30px;
-            font-size: 22px;
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            color: white;
             border: none;
             border-radius: 12px;
             cursor: pointer;
-            transition: all 0.3s;
-            font-weight: bold;
-            letter-spacing: 1px;
-        }
-        
-        #greetBtn {
-            background: linear-gradient(135deg, #4CAF50 0%, #2E7D32 100%);
-            color: white;
-            box-shadow: 0 6px 20px rgba(76, 175, 80, 0.3);
+            font-weight: 600;
+            transition: all 0.3s ease;
+            box-shadow: 0 8px 25px rgba(240, 147, 251, 0.3);
             position: relative;
             overflow: hidden;
         }
         
-        #greetBtn:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 8px 25px rgba(76, 175, 80, 0.4);
+        #changeModeBtn::before {
+            content: '//';
+            position: absolute;
+            left: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-weight: bold;
+            color: rgba(255,255,255,0.7);
         }
         
-        #greetBtn:active {
-            transform: translateY(1px);
+        #changeModeBtn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 35px rgba(240, 147, 251, 0.4);
+        }
+        
+        .buttons {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            margin-bottom: 30px;
+            align-items: center;
+            width: 100%;
+            max-width: 320px;
+        }
+        
+        #greetBtn {
+            padding: 18px 40px;
+            font-size: 20px;
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            color: white;
+            border: none;
+            border-radius: 15px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            box-shadow: 0 10px 30px rgba(79, 172, 254, 0.3);
+            position: relative;
+            overflow: hidden;
         }
         
         #greetBtn::after {
@@ -301,123 +198,85 @@
             }
         }
         
+        #greetBtn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 40px rgba(79, 172, 254, 0.4);
+        }
+        
         #message {
             display: none;
-            font-size: 56px;
-            color: #2c3e50;
-            margin-top: 30px;
-            opacity: 0;
+            font-size: 42px;
+            color: white;
+            margin-top: 25px;
             text-align: center;
-            font-weight: bold;
-            text-shadow: 3px 3px 5px rgba(0,0,0,0.1);
-            background: linear-gradient(135deg, #ff9a00 0%, #ff2d00 100%);
+            font-weight: 700;
+            text-shadow: 2px 2px 10px rgba(0,0,0,0.3);
+            background: linear-gradient(135deg, #ff9a9e 0%, #fad0c4 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
-        }
-        
-        .message-appear {
-            animation: messageAppear 0.8s cubic-bezier(0.68, -0.55, 0.27, 1.55) forwards;
-        }
-        
-        .message-change {
-            animation: messageChange 0.6s cubic-bezier(0.68, -0.55, 0.27, 1.55) forwards;
-        }
-        
-        .message-disappear {
-            animation: messageDisappear 1s ease-out forwards;
+            padding: 15px 30px;
+            border-radius: 20px;
+            backdrop-filter: blur(10px);
+            animation: messageAppear 0.5s ease;
         }
         
         @keyframes messageAppear {
-            0% {
+            from {
                 opacity: 0;
-                transform: translateY(30px) scale(0.8);
+                transform: translateY(20px);
             }
-            50% {
-                transform: translateY(-10px) scale(1.05);
-            }
-            100% {
+            to {
                 opacity: 1;
-                transform: translateY(0) scale(1);
+                transform: translateY(0);
             }
         }
         
-        @keyframes messageChange {
-            0% {
-                opacity: 1;
-                transform: scale(1);
-            }
-            50% {
-                opacity: 0.5;
-                transform: scale(0.9);
-            }
-            100% {
-                opacity: 1;
-                transform: scale(1);
-            }
+        .message-disappear {
+            animation: messageDisappear 0.5s ease forwards;
         }
         
         @keyframes messageDisappear {
-            0% {
+            from {
                 opacity: 1;
-                transform: scale(1);
+                transform: translateY(0);
             }
-            100% {
+            to {
                 opacity: 0;
-                transform: scale(0.8);
+                transform: translateY(20px);
                 display: none;
             }
         }
         
-        body.light-version .message-appear,
-        body.light-version .message-change,
-        body.light-version .message-disappear {
-            animation: none !important;
-            opacity: 1 !important;
-            transform: none !important;
+        .counter {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: rgba(255,255,255,0.1);
+            backdrop-filter: blur(10px);
+            color: white;
+            font-size: 14px;
+            padding: 10px 20px;
+            border-radius: 25px;
+            font-weight: 600;
+            border: 1px solid rgba(255,255,255,0.2);
+            display: none;
         }
         
-        body.light-version .cat-changing {
-            transform: none !important;
-        }
-        
-        .mobile-layout {
-            padding: 20px;
-            box-sizing: border-box;
-        }
-        
-        .mobile-layout #cat {
-            width: 280px;
-        }
-        
-        .mobile-layout .buttons {
-            flex-direction: column;
-            width: 100%;
-            max-width: 320px;
-            gap: 15px;
-        }
-        
-        .mobile-layout button {
-            width: 100%;
-            font-size: 20px;
-        }
-        
-        .mobile-layout #message {
-            font-size: 42px;
-        }
-        
-        .support-modal {
+        /* Модальные окна для современной версии */
+        .support-modal, .about-modal, .secret-image-modal {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background-color: rgba(0,0,0,0.7);
+            background: rgba(0,0,0,0.8);
+            backdrop-filter: blur(5px);
             display: none;
             justify-content: center;
             align-items: center;
             z-index: 1000;
-            animation: fadeIn 0.3s ease-out;
+            animation: fadeIn 0.3s ease;
         }
         
         @keyframes fadeIn {
@@ -425,21 +284,21 @@
             to { opacity: 1; }
         }
         
-        .support-content {
-            background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
+        .support-content, .about-content {
+            background: white;
             padding: 40px;
-            border-radius: 20px;
+            border-radius: 25px;
             text-align: center;
-            max-width: 500px;
+            max-width: 450px;
             width: 90%;
-            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
-            animation: modalAppear 0.4s cubic-bezier(0.68, -0.55, 0.27, 1.55);
+            box-shadow: 0 30px 60px rgba(0,0,0,0.3);
+            animation: modalAppear 0.4s ease;
         }
         
         @keyframes modalAppear {
             0% {
                 opacity: 0;
-                transform: scale(0.7) translateY(20px);
+                transform: scale(0.9) translateY(20px);
             }
             100% {
                 opacity: 1;
@@ -447,145 +306,233 @@
             }
         }
         
-        .support-content h2 {
-            color: #2c3e50;
+        .support-content h2, .about-content h2 {
+            color: #667eea;
             margin-bottom: 25px;
             font-size: 28px;
-            background: linear-gradient(135deg, #2196F3 0%, #0D47A1 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
+            font-weight: 700;
         }
         
-        .support-content p {
-            color: #555;
+        .support-content p, .about-content p {
+            color: #666;
             margin: 15px 0;
-            font-size: 18px;
-            line-height: 1.6;
-        }
-        
-        .device-improvement {
-            margin-top: 20px;
-            padding: 15px;
-            background: #fff3cd;
-            border: 1px solid #ffeaa7;
-            border-radius: 8px;
-            color: #856404;
-        }
-        
-        .support-buttons {
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-            margin-top: 20px;
-        }
-        
-        .support-action-btn {
-            padding: 12px 20px;
-            background: linear-gradient(135deg, #4CAF50 0%, #2E7D32 100%);
-            color: white;
-            border: none;
-            border-radius: 8px;
-            cursor: pointer;
             font-size: 16px;
-            transition: all 0.3s;
-        }
-        
-        .support-action-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(76, 175, 80, 0.3);
+            line-height: 1.6;
         }
         
         .close-btn {
             margin-top: 25px;
             padding: 12px 30px;
-            background: linear-gradient(135deg, #f44336 0%, #d32f2f 100%);
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
             color: white;
             border: none;
-            border-radius: 50px;
+            border-radius: 25px;
             cursor: pointer;
             font-size: 16px;
-            font-weight: bold;
-            transition: all 0.3s;
-            box-shadow: 0 4px 15px rgba(244, 67, 54, 0.3);
+            font-weight: 600;
+            transition: all 0.3s ease;
         }
         
         .close-btn:hover {
             transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(244, 67, 54, 0.4);
+            box-shadow: 0 6px 20px rgba(245, 87, 108, 0.3);
         }
         
-        .snowflake {
+        .secret-image {
+            max-width: 95%;
+            max-height: 95%;
+            border-radius: 20px;
+            box-shadow: 0 30px 60px rgba(0,0,0,0.5);
+        }
+        
+        .close-secret {
             position: absolute;
-            color: #4fc3f7;
-            font-size: 1em;
-            text-shadow: 0 0 5px #fff;
-            animation: fall linear infinite;
-            z-index: -1;
-        }
-        
-        @keyframes fall {
-            to {
-                transform: translateY(100vh) rotate(360deg);
-            }
-        }
-        
-        body.light-version .snowflake {
-            display: none;
-        }
-        
-        .first-version-modal {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0,0,0,0.9);
-            display: none;
-            justify-content: center;
-            align-items: center;
-            z-index: 2000;
-        }
-        
-        .first-version-content {
-            background: white;
-            border-radius: 10px;
-            width: 95%;
-            height: 95%;
-            overflow: hidden;
-            position: relative;
-        }
-        
-        .first-version-header {
-            background: #f44336;
+            top: 30px;
+            right: 30px;
+            background: rgba(255,255,255,0.1);
+            backdrop-filter: blur(10px);
             color: white;
-            padding: 15px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-        
-        .first-version-title {
-            font-size: 20px;
-            font-weight: bold;
-        }
-        
-        .close-first-version {
-            background: white;
-            color: #f44336;
-            border: none;
-            border-radius: 50%;
-            width: 30px;
-            height: 30px;
+            border: 1px solid rgba(255,255,255,0.3);
+            width: 50px;
+            height: 50px;
             cursor: pointer;
-            font-size: 18px;
+            font-size: 24px;
             font-weight: bold;
+            border-radius: 50%;
+            transition: all 0.3s ease;
         }
         
-        .first-version-frame {
-            width: 100%;
-            height: calc(100% - 60px);
-            border: none;
+        .close-secret:hover {
+            background: rgba(255,255,255,0.2);
+            transform: rotate(90deg);
+        }
+        
+        /* Стили для версии 90-х (при активации класса .retro-version) */
+        body.retro-version {
+            background: #000080 !important;
+            font-family: "Courier New", monospace !important;
+        }
+        
+        body.retro-version::before {
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100"><polygon points="50,10 61,35 88,35 66,52 73,78 50,63 27,78 34,52 12,35 39,35" fill="%2300ffff" opacity="0.1"/></svg>') !important;
+        }
+        
+        body.retro-version #settingsBtn {
+            background: #000080 !important;
+            color: #00ffff !important;
+            border: 2px solid #00ffff !important;
+            border-radius: 0 !important;
+            box-shadow: none !important;
+            font-family: "Courier New", monospace !important;
+            text-transform: uppercase !important;
+        }
+        
+        body.retro-version #settingsBtn:hover {
+            transform: none !important;
+            background: #00ffff !important;
+            color: #000080 !important;
+        }
+        
+        body.retro-version #settingsPanel {
+            background: #000080 !important;
+            border: 3px solid #00ffff !important;
+            border-radius: 0 !important;
+            box-shadow: none !important;
+            animation: none !important;
+        }
+        
+        body.retro-version .settingsButton {
+            background: #800080 !important;
+            color: #ffffff !important;
+            border: 2px solid #00ffff !important;
+            border-radius: 0 !important;
+            font-family: "Courier New", monospace !important;
+            text-transform: uppercase !important;
+        }
+        
+        body.retro-version .settingsButton:hover {
+            transform: none !important;
+            background: #00ffff !important;
+            color: #000080 !important;
+            box-shadow: none !important;
+        }
+        
+        body.retro-version #cat {
+            border: 5px solid #00ffff !important;
+            border-radius: 0 !important;
+            box-shadow: none !important;
+        }
+        
+        body.retro-version #changeModeBtn {
+            background: #ff0000 !important;
+            color: #ffff00 !important;
+            border: 3px solid #ffff00 !important;
+            border-radius: 0 !important;
+            box-shadow: none !important;
+            font-family: "Courier New", monospace !important;
+        }
+        
+        body.retro-version #changeModeBtn::before {
+            content: '//' !important;
+            color: #ffff00 !important;
+        }
+        
+        body.retro-version #changeModeBtn:hover {
+            transform: none !important;
+            background: #ffff00 !important;
+            color: #ff0000 !important;
+        }
+        
+        body.retro-version #greetBtn {
+            background: #008000 !important;
+            color: #ffffff !important;
+            border: 3px solid #00ff00 !important;
+            border-radius: 0 !important;
+            box-shadow: none !important;
+            font-family: "Courier New", monospace !important;
+        }
+        
+        body.retro-version #greetBtn:hover {
+            transform: none !important;
+            background: #00ff00 !important;
+            color: #000000 !important;
+        }
+        
+        body.retro-version #message {
+            color: #ff0000 !important;
+            background: #000080 !important;
+            border: 3px solid #00ffff !important;
+            border-radius: 0 !important;
+            text-shadow: 3px 3px 0 #000 !important;
+            font-family: "Courier New", monospace !important;
+            -webkit-text-fill-color: #ff0000 !important;
+        }
+        
+        body.retro-version .counter {
+            background: #000080 !important;
+            color: #00ffff !important;
+            border: 2px solid #00ffff !important;
+            border-radius: 0 !important;
+            font-family: "Courier New", monospace !important;
+        }
+        
+        body.retro-version .support-modal,
+        body.retro-version .about-modal {
+            background: #000080 !important;
+        }
+        
+        body.retro-version .support-content,
+        body.retro-version .about-content {
+            background: #000080 !important;
+            border: 5px solid #00ffff !important;
+            border-radius: 0 !important;
+            color: #00ffff !important;
+            font-family: "Courier New", monospace !important;
+        }
+        
+        body.retro-version .support-content h2,
+        body.retro-version .about-content h2 {
+            color: #ffff00 !important;
+            text-shadow: 2px 2px 0 #ff0000 !important;
+            font-family: "Courier New", monospace !important;
+        }
+        
+        body.retro-version .support-content p,
+        body.retro-version .about-content p {
+            color: #ffffff !important;
+            font-family: "Courier New", monospace !important;
+        }
+        
+        body.retro-version .close-btn {
+            background: #ff0000 !important;
+            color: #ffffff !important;
+            border: 2px solid #ffff00 !important;
+            border-radius: 0 !important;
+            font-family: "Courier New", monospace !important;
+            text-transform: uppercase !important;
+        }
+        
+        body.retro-version .close-btn:hover {
+            transform: none !important;
+            background: #ffff00 !important;
+            color: #ff0000 !important;
+        }
+        
+        body.retro-version .secret-image-modal {
+            background: #000000 !important;
+        }
+        
+        body.retro-version .secret-image {
+            border: 10px solid #ff0000 !important;
+            border-radius: 0 !important;
+        }
+        
+        body.retro-version .close-secret {
+            background: #ff0000 !important;
+            color: #ffffff !important;
+            border: 3px solid #ffff00 !important;
+            border-radius: 0 !important;
+            font-family: "Courier New", monospace !important;
         }
     </style>
 </head>
@@ -593,256 +540,146 @@
     <button id="settingsBtn">⚙️ Настройки</button>
     
     <div id="settingsPanel">
-        <button class="settingsButton" id="mobileModeBtn">📱 Версия для телефона</button>
-        <button class="settingsButton" id="lightVersionBtn">⚡ Облегчённая версия</button>
-        <button class="settingsButton" id="supportBtn">🆘 Служба поддержки</button>
+        <button class="settingsButton" id="retroModeBtn">
+            <span>🎮</span> Версия 90-х
+        </button>
+        <button class="settingsButton" id="supportBtn">
+            <span>🆘</span> Техподдержка
+        </button>
+        <button class="settingsButton" id="aboutBtn">
+            <span>ℹ️</span> О нас
+        </button>
     </div>
     
     <div id="supportModal" class="support-modal">
         <div class="support-content">
-            <h2>🎄 Служба поддержки 🎄</h2>
-            <p>Если у вас возникли проблемы с работой приложения, свяжитесь с нами:</p>
+            <h2>Техническая поддержка</h2>
+            <p>Возникли проблемы? Свяжитесь с нами:</p>
             <p>📧 Email: <strong>Degtanikov266@mail.ru</strong></p>
             <p>📞 Телефон: <strong>+7 (800) 555-35-35</strong></p>
-            <p>🕐 Время работы: круглосуточно</p>
-            
-            <div class="support-buttons">
-                <button class="support-action-btn" id="firstVersionBtn">📜 Первая версия</button>
-            </div>
-            
-            <div id="deviceImprovement" class="device-improvement" style="display: none;">
-                <strong>💡 Попробуйте улучшить ваше устройство:</strong>
-                <p style="font-size: 14px; margin: 10px 0 0 0;">
-                    1. Обновите браузер до последней версии<br>
-                    2. Очистите кэш браузера<br>
-                    3. Проверьте доступную оперативную память<br>
-                    4. Отключите ненужные расширения
-                </p>
-            </div>
-            <button class="close-btn">Закрыть</button>
+            <p>🕐 Работаем круглосуточно</p>
+            <button class="close-btn" id="closeSupportBtn">Закрыть</button>
         </div>
     </div>
     
-    <div id="firstVersionModal" class="first-version-modal">
-        <div class="first-version-content">
-            <div class="first-version-header">
-                <div class="first-version-title">Первая версия (Оригинал)</div>
-                <button class="close-first-version" id="closeFirstVersionBtn">×</button>
-            </div>
-            <iframe id="firstVersionFrame" class="first-version-frame" srcdoc='
-<!DOCTYPE html>
-<html lang="ru">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>С Новым годом! (Первая версия)</title>
-    <style>
-        body {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            height: 100vh;
-            background-color: #f0f8ff;
-        }
-        #cat {
-            width: 300px;
-            margin-bottom: 20px;
-        }
-        button {
-            padding: 10px 20px;
-            font-size: 20px;
-            background: #4CAF50;
-            color: white;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-        }
-        #message {
-            display: none;
-            font-size: 48px;
-            color: red;
-            margin-top: 20px;
-        }
-    </style>
-</head>
-<body>
-    <img id="cat" src="https://i.pinimg.com/736x/e0/4e/4b/e04e4b598abd3646eb0ce75dc3d3db5d.jpg" alt="Кот в шапке Santa">
-    <button id="greetBtn">С Новым годом!</button>
-    <div id="message">Нового года не будет</div>
-
-    <script>
-        document.getElementById("greetBtn").onclick = function() {
-            document.getElementById("message").style.display = "block";
-        }
-    </script>
-</body>
-</html>
-            '></iframe>
+    <div id="aboutModal" class="about-modal">
+        <div class="about-content">
+            <h2>О приложении</h2>
+            <p>🎄 Современное новогоднее приложение 🎄</p>
+            <p>Разработано с использованием современных технологий</p>
+            <p>✨ Адаптивный дизайн</p>
+            <p>🎨 Плавные анимации</p>
+            <p>🔧 Две уникальные темы: современная и ретро-стиль 90-х</p>
+            <button class="close-btn" id="closeAboutBtn">Закрыть</button>
         </div>
+    </div>
+    
+    <div id="secretImageModal" class="secret-image-modal">
+        <button class="close-secret" id="closeSecretBtn">✕</button>
+        <img id="secretImage" class="secret-image" src="" alt="Секретное изображение">
     </div>
     
     <img id="cat" src="https://i.pinimg.com/736x/e0/4e/4b/e04e4b598abd3646eb0ce75dc3d3db5d.jpg" alt="Кот в шапке Santa">
     
     <div class="buttons">
         <button id="greetBtn">🎅 С Новым годом! 🎄</button>
-        <button id="changeModeBtn">🎭</button>
+        <button id="changeModeBtn">// Сменить фото</button>
     </div>
     
     <audio id="audio" src="new_year_music.mp3"></audio>
+    <audio id="secretAudio" src="secret_sound.mp3"></audio>
     <div id="message">Нового года не будет</div>
+    
+    <div class="counter" id="counter">Нажатий: 0</div>
 
     <script>
         let isMessageOne = true;
         let holdTimer;
-        let isMobileMode = false;
+        let isRetroVersion = false;
         let isChangedMode = false;
         let isHolding = false;
         let messageTimeout;
-        let isLightVersion = false;
+        let clickCount = 0;
         const originalCat = "https://i.pinimg.com/736x/e0/4e/4b/e04e4b598abd3646eb0ce75dc3d3db5d.jpg";
         const changedCat = "https://i.pinimg.com/originals/37/7c/ba/377cbac9738316803e71c211cb755c3a.jpg";
+        const secretImage = "https://static.wikia.nocookie.net/a03ca8f7-71b3-47f6-a920-39a7c935f5ca";
         
-        function createSnowflakes() {
-            if (isLightVersion) return;
-            
-            const snowflakes = ['❄️', '✨', '⭐', '❅', '❆'];
-            for (let i = 0; i < 30; i++) {
-                setTimeout(() => {
-                    const snowflake = document.createElement('div');
-                    snowflake.className = 'snowflake';
-                    snowflake.textContent = snowflakes[Math.floor(Math.random() * snowflakes.length)];
-                    snowflake.style.left = Math.random() * 100 + 'vw';
-                    snowflake.style.fontSize = (Math.random() * 20 + 10) + 'px';
-                    snowflake.style.opacity = Math.random() * 0.5 + 0.3;
-                    snowflake.style.animationDuration = (Math.random() * 10 + 10) + 's';
-                    snowflake.style.animationDelay = Math.random() * 5 + 's';
-                    document.body.appendChild(snowflake);
-                    
-                    setTimeout(() => {
-                        if (snowflake.parentNode) {
-                            snowflake.remove();
-                        }
-                    }, 15000);
-                }, i * 300);
-            }
-        }
-        
-        if (!isLightVersion) {
-            createSnowflakes();
-            setInterval(createSnowflakes, 20000);
-        }
-        
-        function animateMessage(newText, isChange = false) {
+        function showMessage(newText) {
             const messageElement = document.getElementById("message");
             
             if (messageTimeout) {
                 clearTimeout(messageTimeout);
             }
             
-            messageElement.classList.remove("message-disappear");
             messageElement.style.display = "block";
-            messageElement.style.opacity = "1";
-            
-            if (isLightVersion) {
-                messageElement.textContent = newText;
-            } else {
-                if (isChange) {
-                    messageElement.textContent = newText;
-                    messageElement.classList.remove("message-appear");
-                    void messageElement.offsetWidth;
-                    messageElement.classList.add("message-change");
-                    
-                    setTimeout(() => {
-                        messageElement.classList.remove("message-change");
-                    }, 600);
-                } else {
-                    messageElement.textContent = newText;
-                    messageElement.classList.remove("message-change");
-                    void messageElement.offsetWidth;
-                    messageElement.classList.add("message-appear");
-                    
-                    setTimeout(() => {
-                        messageElement.classList.remove("message-appear");
-                    }, 800);
-                }
-            }
+            messageElement.textContent = newText;
+            messageElement.classList.remove("message-disappear");
             
             messageTimeout = setTimeout(() => {
-                hideMessage();
+                messageElement.classList.add("message-disappear");
+                setTimeout(() => {
+                    messageElement.style.display = "none";
+                }, 500);
             }, 10000);
         }
         
-        function hideMessage() {
-            const messageElement = document.getElementById("message");
+        function updateCounter() {
+            const counterElement = document.getElementById("counter");
+            counterElement.textContent = `Нажатий: ${clickCount}`;
             
-            if (isLightVersion) {
-                messageElement.style.display = "none";
-            } else {
-                messageElement.classList.add("message-disappear");
+            if (clickCount > 0) {
+                counterElement.style.display = "block";
+            }
+            
+            if (clickCount === 67) {
+                const secretImg = document.getElementById("secretImage");
+                secretImg.src = secretImage;
+                document.getElementById("secretImageModal").style.display = "flex";
                 
-                setTimeout(() => {
-                    messageElement.style.display = "none";
-                    messageElement.classList.remove("message-disappear");
-                }, 1000);
+                const secretAudio = document.getElementById("secretAudio");
+                secretAudio.play().catch(e => console.log("Секретный звук не воспроизводится:", e));
             }
         }
         
         document.getElementById("greetBtn").onclick = function() {
-            if (!isLightVersion) {
-                const cat = document.getElementById("cat");
-                cat.classList.add("cat-changing");
-                
-                setTimeout(() => {
-                    cat.classList.remove("cat-changing");
-                }, 800);
-            }
+            clickCount++;
+            updateCounter();
             
-            if (isMessageOne) {
-                animateMessage("🎉 Новый год будет! 🎉", false);
+            if (!isChangedMode) {
+                document.getElementById("cat").src = originalCat;
+                showMessage("Нового года не будет");
             } else {
-                animateMessage("😢 Нового года не будет", false);
+                document.getElementById("cat").src = changedCat;
+                showMessage("Новый год будет");
             }
             
             const audio = document.getElementById("audio");
             audio.play().catch(e => console.log("Аудио не воспроизводится:", e));
-            
-            isMessageOne = !isMessageOne;
         };
         
         document.getElementById("changeModeBtn").onclick = function() {
-            if (isMobileMode) {
-                isChangedMode = !isChangedMode;
-                const cat = document.getElementById("cat");
-                
-                if (isLightVersion) {
-                    cat.src = isChangedMode ? changedCat : originalCat;
-                    
-                    isMessageOne = !isChangedMode;
-                    if (isChangedMode) {
-                        animateMessage("🎉 Новый год будет! 🎉", false);
-                    } else {
-                        animateMessage("😢 Нового года не будет", false);
-                    }
+            isChangedMode = !isChangedMode;
+            
+            const cat = document.getElementById("cat");
+            cat.classList.add("cat-changing");
+            
+            setTimeout(() => {
+                cat.classList.remove("cat-changing");
+            }, 500);
+            
+            if (isChangedMode) {
+                cat.src = changedCat;
+                if (isRetroVersion) {
+                    this.innerHTML = '// ВЕРНУТЬ ФОТО';
                 } else {
-                    cat.style.transform = "scale(0.9) rotate(-10deg)";
-                    cat.style.opacity = "0.7";
-                    
-                    setTimeout(() => {
-                        cat.src = isChangedMode ? changedCat : originalCat;
-                        
-                        setTimeout(() => {
-                            cat.style.transform = "scale(1) rotate(0deg)";
-                            cat.style.opacity = "1";
-                            
-                            isMessageOne = !isChangedMode;
-                            if (isChangedMode) {
-                                animateMessage("🎉 Новый год будет! 🎉", true);
-                            } else {
-                                animateMessage("😢 Нового года не будет", true);
-                            }
-                        }, 50);
-                    }, 300);
+                    this.innerHTML = '// Вернуть фото';
+                }
+            } else {
+                cat.src = originalCat;
+                if (isRetroVersion) {
+                    this.innerHTML = '// СМЕНИТЬ ФОТО';
+                } else {
+                    this.innerHTML = '// Сменить фото';
                 }
             }
         };
@@ -850,39 +687,21 @@
         document.getElementById("greetBtn").onmousedown = function() {
             isHolding = true;
             
-            if (!isLightVersion) {
-                const btn = this;
-                btn.style.background = "linear-gradient(135deg, #FF9800 0%, #F57C00 100%)";
-            }
-            
             holdTimer = setTimeout(function() {
                 const cat = document.getElementById("cat");
-                if (!isLightVersion) {
-                    cat.classList.add("cat-changing");
-                }
+                cat.classList.add("cat-changing");
                 cat.src = changedCat;
-                
-                if (!isLightVersion) {
-                    const btn = document.getElementById("greetBtn");
-                    btn.style.background = "linear-gradient(135deg, #4CAF50 0%, #2E7D32 100%)";
-                }
-                
-                animateMessage("✨ Ты держишь кнопку 5 секунд! ✨", false);
+                showMessage("Ты держишь кнопку 5 секунд!");
             }, 5000);
         };
         
         document.getElementById("greetBtn").onmouseup = function() {
             clearTimeout(holdTimer);
             
-            if (!isLightVersion) {
-                this.style.background = "linear-gradient(135deg, #4CAF50 0%, #2E7D32 100%)";
-            }
-            
-            if (!isHolding || isMobileMode) {
-                if (!isMobileMode && !isChangedMode) {
-                    const cat = document.getElementById("cat");
+            if (!isHolding) {
+                if (!isChangedMode) {
                     setTimeout(() => {
-                        cat.src = originalCat;
+                        document.getElementById("cat").src = originalCat;
                     }, 100);
                 }
             }
@@ -891,11 +710,6 @@
         
         document.getElementById("greetBtn").onmouseleave = function() {
             clearTimeout(holdTimer);
-            
-            if (!isLightVersion) {
-                this.style.background = "linear-gradient(135deg, #4CAF50 0%, #2E7D32 100%)";
-            }
-            
             isHolding = false;
         };
         
@@ -904,47 +718,20 @@
             panel.style.display = panel.style.display === "block" ? "none" : "block";
         };
         
-        document.getElementById("mobileModeBtn").onclick = function() {
-            isMobileMode = !isMobileMode;
+        document.getElementById("retroModeBtn").onclick = function() {
+            isRetroVersion = !isRetroVersion;
             const body = document.body;
             
-            if (isMobileMode) {
-                body.classList.add("mobile-layout");
-                document.getElementById("mobileModeBtn").textContent = "📱 Обычная версия";
+            if (isRetroVersion) {
+                body.classList.add("retro-version");
+                document.getElementById("retroModeBtn").innerHTML = '<span>🎮</span> Современная версия';
+                document.getElementById("changeModeBtn").innerHTML = '// СМЕНИТЬ ФОТО';
+                document.getElementById("counter").style.display = "block";
             } else {
-                body.classList.remove("mobile-layout");
-                document.getElementById("mobileModeBtn").textContent = "📱 Версия для телефона";
-                isChangedMode = false;
-                document.getElementById("cat").src = originalCat;
-                document.getElementById("greetBtn").textContent = "🎅 С Новым годом! 🎄";
-            }
-            
-            document.getElementById("settingsPanel").style.display = "none";
-        };
-        
-        document.getElementById("lightVersionBtn").onclick = function() {
-            isLightVersion = !isLightVersion;
-            const body = document.body;
-            
-            if (isLightVersion) {
-                body.classList.add("light-version");
-                document.getElementById("lightVersionBtn").textContent = "✨ Полная версия";
-                
-                if (isMobileMode) {
-                    document.getElementById("changeModeBtn").textContent = "Сменить режим";
-                }
-                
-                const snowflakes = document.querySelectorAll('.snowflake');
-                snowflakes.forEach(snowflake => snowflake.remove());
-            } else {
-                body.classList.remove("light-version");
-                document.getElementById("lightVersionBtn").textContent = "⚡ Облегчённая версия";
-                
-                if (isMobileMode) {
-                    document.getElementById("changeModeBtn").textContent = "🎭";
-                }
-                
-                createSnowflakes();
+                body.classList.remove("retro-version");
+                document.getElementById("retroModeBtn").innerHTML = '<span>🎮</span> Версия 90-х';
+                document.getElementById("changeModeBtn").innerHTML = '// Сменить фото';
+                document.getElementById("counter").style.display = "none";
             }
             
             document.getElementById("settingsPanel").style.display = "none";
@@ -953,22 +740,23 @@
         document.getElementById("supportBtn").onclick = function() {
             document.getElementById("supportModal").style.display = "flex";
             document.getElementById("settingsPanel").style.display = "none";
-            
-            const deviceImprovement = document.getElementById("deviceImprovement");
-            deviceImprovement.style.display = isLightVersion ? "block" : "none";
         };
         
-        document.getElementById("firstVersionBtn").onclick = function() {
-            document.getElementById("firstVersionModal").style.display = "flex";
+        document.getElementById("aboutBtn").onclick = function() {
+            document.getElementById("aboutModal").style.display = "flex";
+            document.getElementById("settingsPanel").style.display = "none";
+        };
+        
+        document.getElementById("closeSupportBtn").onclick = function() {
             document.getElementById("supportModal").style.display = "none";
         };
         
-        document.getElementById("closeFirstVersionBtn").onclick = function() {
-            document.getElementById("firstVersionModal").style.display = "none";
+        document.getElementById("closeAboutBtn").onclick = function() {
+            document.getElementById("aboutModal").style.display = "none";
         };
         
-        document.querySelector(".close-btn").onclick = function() {
-            document.getElementById("supportModal").style.display = "none";
+        document.getElementById("closeSecretBtn").onclick = function() {
+            document.getElementById("secretImageModal").style.display = "none";
         };
         
         document.getElementById("supportModal").onclick = function(e) {
@@ -977,7 +765,13 @@
             }
         };
         
-        document.getElementById("firstVersionModal").onclick = function(e) {
+        document.getElementById("aboutModal").onclick = function(e) {
+            if (e.target === this) {
+                this.style.display = "none";
+            }
+        };
+        
+        document.getElementById("secretImageModal").onclick = function(e) {
             if (e.target === this) {
                 this.style.display = "none";
             }
